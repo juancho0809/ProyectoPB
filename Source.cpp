@@ -5,6 +5,7 @@ using namespace std;
 int main()
 {
     int i;
-    std::cout << "Hello World!\n";
+    cout << "Hello World!\n";
     cin >> i;
+    cout << "HOLA ESTA ES UNA PRUEBA DE ESTE CODIGO";
 }
