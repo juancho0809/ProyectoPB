@@ -1,11 +1,16 @@
-// ProyectoFinal.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
+// ProyectoFinal.cpp : Codigo Principal Proyecto Programacion
 //
 
 #include <iostream>
 
+using namespace std;
+
 int main()
 {
-    std::cout << "Hello World!\n";
+	int k;
+    cout << "Hello World!\n";
+    cin >> k;
+    cout << "El n�mero escogido es: "<<k;
 }
 
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
