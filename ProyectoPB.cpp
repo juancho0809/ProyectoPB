@@ -20,7 +20,7 @@ typedef struct {
 /*Funciones de Archivo*/
 void Crear(void);
 void Listar(void);
-void Agregar(void);
+void AgregarDemandante(void);
 void Modificar(void);
 void Borrar(void);
 void Encontrar(void);
@@ -33,7 +33,7 @@ FILE *abrir_fichero_b(char cadena[], int metodo);
 int main()
 {
     FILE *fp;
-    int opc;
+    int opc, opcionf;
     char cad[3];
    
     fp = abrir_fichero_b(nombre_fichero,0);
@@ -43,17 +43,17 @@ int main()
     }
     else
     {
-        printf( "Error (NO ABIERTO)\n" );
-        puts("Presiona cualquier tecla para continuar.... y Crear el Archivo");
+        cout << "Error (NO ABIERTO)\n" <<endl;
+        cout <<"Presiona cualquier tecla para continuar.... y Crear el Archivo"<<endl;
         fp = abrir_fichero_b(nombre_fichero,1);
         fclose(fp);
         getch();    }
    
     do{
     system("cls");
-        puts("1. Crear Archivo (Cuidado, elimina lo que ya se tiene en el Archivo)");
-        puts("2. Agregar\n3. Eliminar\n4. Listar\n5. Buscar\n6. Modificar\n7. Salir");
-        puts("?Introduce tu opcion y depues enter.");
+        cout << "1. Crear Archivo (Cuidado, elimina lo que ya se tiene en el Archivo)"<<endl;
+        cout << "2. Agregar\n3. Eliminar\n4. Listar\n5. Buscar\n6. Modificar\n7. Salir";
+        cout << "?Introduce tu opcion y depues enter.";
        
         opc = atoi(gets(cad));
         while(opc<0 || opc>7) /*Limitando la entrada de las opciones*/   
@@ -62,10 +62,13 @@ int main()
         switch(opc)
         {
         case 1:
-                Crear();
+                Crear(); 
                 break;
-        case 2:   
-                Agregar();
+        case 2:  
+				
+					AgregarDemandante();//Decidir si es demandante o empleador
+				
+					
                 break;
         case 3:
                 Borrar();
@@ -85,7 +88,7 @@ int main()
         /*Solo parar cuando sea una de las opciones*/
         if(opc<7)
         {
-            puts("\n\nPresiona Cualquier Tecla para Regresar al Menu");
+            cout << "\n\nPresiona Cualquier Tecla para Regresar al Menu"<<endl;
             getch();
         }
     }
@@ -104,10 +107,12 @@ void Crear(void){
    fp = abrir_fichero_b(nombre_fichero,0);
    if(fp)
    {
-        printf("\n Archivo agenda.dat YA EXISTE\n");
+       cout <<"\n Archivo agenda.dat YA EXISTE\n"<<endl;
         fclose(fp); 
    }
-   else if(!fp){printf("\n Archivo agenda.dat CREADO\n");}
+   else if(!fp){
+   	cout <<"\n Archivo agenda.dat CREADO\n";
+	}
 }
 
 
@@ -119,42 +124,42 @@ void Listar(void){
    Amigo aux;
     fp = abrir_fichero_b(nombre_fichero,0);
    if(!(fp))
-       printf("\n Error de apuertura del archivo agenda.dat\n");
+       cout <<"\n Error de apuertura del archivo agenda.dat\n";
    else{
-      printf("\n U S U A R I O S  E N  L A  A G E N D A\n");
-      printf("---------------------------------------------------------------\n");
+      cout<<"\n U S U A R I O S  E N  L A  A G E N D A\n";
+      cout <<"---------------------------------------------------------------\n";
       while ((fread(&aux, sizeof(aux), 1, fp))!=0){
-        printf("=> Datos del Amigo %d\n",i);
-        printf("Nombre: %s | Edad: %d | Telefono: %s\n",aux.nom,aux.edad,aux.tel);
-        printf("Direccion: %s\n",aux.dir);
+        cout <<"=> Datos del Amigo "<<i<<"\n";
+        cout <<"Nombre: "<<aux.nom<< "| Edad: "<<aux.edad<<" | Telefono: "<<aux.tel<<"\n";
+        cout <<"Direccion: "<<aux.dir <<"\n";
         i++;
       }
-      printf("---------------------------------------------------------------\n");
+      cout <<"---------------------------------------------------------------\n";
       fclose(fp);
    }
 }
 
 /********************************************************
 Funcion que sirve para agregar un registro dentro del Archivo Binario*/
-void Agregar(void){
+void AgregarDemandante(void){
    FILE *fp;
    Amigo aux;
    char cad[3];
 
-   printf("\n Agregando un Amigo Nuevo al archivo binario agenda.dat\n");
+   cout <<"\n Agregando un Amigo Nuevo al archivo binario agenda.dat\n";
    fp=abrir_fichero_b(nombre_fichero,2);
    if(!(fp))
-        printf("\n Error de apuertura del archivo agenda.dat\n");
+        cout <<"\n Error de apuertura del archivo agenda.dat\n";
    else{
         /*Introduciendo los Datos del Amigo*/
-        printf("Dame el nombre del Amigo: ");
-        gets(aux.nom);
-        printf("Dame la Edad del Amigo: ");
+        cout <<"Dame el nombre del Amigo: "<<endl;
+        cin >> aux.nom;
+        cout <<"Dame la Edad del Amigo: "<<endl;
         aux.edad=atoi(gets(cad));
-        printf("Dame el telefono del Amigo: ");
-        gets(aux.tel);
+        cout <<"Dame el telefono del Amigo: "<<endl;
+        cin >> aux.tel;
         printf("Dame la direccion del Amigo: ");
-        gets(aux.dir);
+        cin >> aux.dir;
 
         fwrite(&aux, sizeof(aux), 1, fp);
         fclose(fp);
@@ -171,31 +176,31 @@ void Modificar(void){
    char cadena[25],cad[2];
     fp=abrir_fichero_b(nombre_fichero,3);
    if(!(fp))
-       printf("\n Error de apuertura del archivo agenda.dat\n");
+       cout <<"\n Error de apuertura del archivo agenda.dat\n";
    else{
-        printf("Como se llama al amigo que quieres Modificar: ");
-        gets(cadena);
+        cout <<"Como se llama al amigo que quieres Modificar: "<<endl;
+        cin >> cadena;
        
         /*Buscando el Amigo dentro del Archivo*/
       while ((n=fread(&aux, sizeof(aux), 1, fp))!=0 && stricmp(aux.nom,cadena)!=0);
       if (n==0)
-         printf("No existe el cuate llamado: %s ",cadena);
+         cout <<"No existe el usuario llamado: "<<cadena<<endl;
       else{
-         printf("\n Amigo encontrado....!!!\n");
-         printf("Nombre: %s ",aux.nom);
-         printf("Edad: %d ",aux.edad);
-         printf("Telefono %s ",aux.tel);
-         printf("Direccion: %s\n",aux.dir);
+         cout <<"\n Amigo encontrado....!!!\n"<<endl;
+         cout <<"Nombre: "<<aux.nom<<endl;
+         cout <<"Edad: "<<aux.edad<<endl;
+         cout <<"Telefono: "<<aux.tel<<endl;
+         cout <<"Direccion: "<<aux.dir<<endl;
        
-         printf("\n CAMBIANDO VALORES \n");
+         cout <<"\n CAMBIANDO VALORES \n";
        
-        printf("Dame el nombre nuevo del Amigo: ");
+        cout <<"Dame el nombre nuevo del Amigo: "<<endl;
         gets(aux.nom);
-        printf("Dame la nueva Edad del Amigo: ");
+        cout <<"Dame la nueva Edad del Amigo: "<<endl;
         aux.edad=atoi(gets(cad));
-        printf("Dame el nuevo telefono del Amigo: ");
+        cout <<"Dame el nuevo telefono del Amigo: "<<endl;
         gets(aux.tel);
-        printf("Dame la nueva direccion del Amigo: ");
+        cout <<"Dame la nueva direccion del Amigo: "<<endl;
         gets(aux.dir);
         
        
